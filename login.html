@@ -679,8 +679,8 @@
                     <strong>⚠️ Connection Error</strong>
                     <p>Unable to connect to server. Please ensure:</p>
                     <ol>
-                        <li>Backend server is running: <code>node server.js</code></li>
-                        <li>Server is running on port 5000</li>
+                        <li>Backend server is running on Render</li>
+                        <li>Your backend URL is: <code>https://yidana-hostels.onrender.com</code></li>
                         <li>No firewall blocking the connection</li>
                     </ol>
                 </div>
@@ -770,7 +770,8 @@
     </div>
 
     <script>
-        const API_BASE_URL = 'http://localhost:5000';
+        // API Base URL - Updated to Render deployment
+        const API_BASE_URL = 'https://yidana-hostels.onrender.com';
         let currentRole = 'student';
         let connectionCheckInterval = null;
 

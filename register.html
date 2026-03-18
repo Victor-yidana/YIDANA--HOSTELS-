@@ -722,8 +722,8 @@
 
                     <div class="help-section">
                         <h4>📱 Having Registration Issues?</h4>
-                        <p>• Make sure your backend server is running on <strong>port 5000</strong></p>
-                        <p>• Run: <code>node server.js</code> in your terminal</p>
+                        <p>• Make sure your backend server is running on <strong>Render</strong></p>
+                        <p>• Your backend URL is: <code>https://yidana-hostels.onrender.com</code></p>
                         <p>• Make sure you're using a valid email address</p>
                         <p>• Ghana mobile numbers must start with 02, 05, or 0[2-5] and be 10 digits</p>
                         <p>• Check your spam folder for registration emails</p>
@@ -748,6 +748,9 @@
     </div>
 
     <script>
+        // API Base URL - Updated to Render deployment
+        const API_BASE_URL = 'https://yidana-hostels.onrender.com';
+
         // Current role (student or owner)
         let currentRole = 'student';
         let settings = {};
@@ -761,7 +764,7 @@
         async function checkServerConnection() {
             const statusDiv = document.getElementById('serverStatus');
             try {
-                const response = await fetch('http://localhost:5000/api', {
+                const response = await fetch(`${API_BASE_URL}/api`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -778,7 +781,7 @@
                 }
             } catch (error) {
                 console.error('Server connection error:', error);
-                statusDiv.innerHTML = '❌ Cannot connect to server. Make sure it\'s running on port 5000';
+                statusDiv.innerHTML = '❌ Cannot connect to server. Make sure it\'s running on Render';
                 statusDiv.style.color = '#FC8181';
                 return false;
             }
@@ -790,12 +793,12 @@
                 const isConnected = await checkServerConnection();
                 if (!isConnected) return;
                 
-                const response = await fetch('http://localhost:5000/api/settings');
+                const response = await fetch(`${API_BASE_URL}/api/settings`);
                 if (response.ok) {
                     settings = await response.json();
                     const logoImg = document.getElementById('logo');
                     if (settings.logoUrl) {
-                        logoImg.src = 'http://localhost:5000' + settings.logoUrl;
+                        logoImg.src = `${API_BASE_URL}${settings.logoUrl}`;
                     }
                     console.log('Settings loaded:', settings);
                 }
@@ -884,7 +887,7 @@
             // Check server connection first
             const isConnected = await checkServerConnection();
             if (!isConnected) {
-                showNotification('❌ Cannot connect to server. Please make sure it\'s running on port 5000', 'error');
+                showNotification('❌ Cannot connect to server. Please make sure it\'s running on Render', 'error');
                 return;
             }
             
@@ -958,7 +961,7 @@
                 
                 // Determine endpoint based on role
                 const endpoint = currentRole === 'student' ? '/api/students/register' : '/api/owners/register';
-                const fullUrl = `http://localhost:5000${endpoint}`;
+                const fullUrl = `${API_BASE_URL}${endpoint}`;
                 
                 console.log('Sending request to:', fullUrl);
                 console.log('With data:', userData);
@@ -1042,7 +1045,7 @@
             } catch (error) {
                 console.error('Registration error:', error);
                 
-                showNotification('❌ Cannot connect to server. Please ensure the server is running on port 5000.', 'error');
+                showNotification('❌ Cannot connect to server. Please ensure the server is running on Render.', 'error');
                 
                 // Show help with contact info
                 setTimeout(() => {
