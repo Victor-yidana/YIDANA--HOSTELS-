@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - YIDANA HOSTELS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+ 
+        body {
+            background: radial-gradient(circle at 10% 20%, #0F2A5A, #0B1C3D); /* Background gradient */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #0B1C3D; /* Dark Navy main background */
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(5, 16, 36, 0.8); /* Dark overlay */
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+            border: 1px solid rgba(245, 194, 66, 0.2); /* Gold border */
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(145deg, #0F2A5A, #0B1C3D); /* Navy gradient */
+            color: #FFFFFF; /* White primary text */
+            padding: 30px 30px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(245, 194, 66, 0.2); /* Gold border */
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(245, 194, 66, 0.15); /* Gold with opacity */
+            border: 1px solid rgba(245, 194, 66, 0.3); /* Gold border */
+            color: #F5C242; /* Primary Gold */
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .home-button:hover {
+            background: linear-gradient(145deg, #F5C242, #D4A017); /* Gold gradient */
+            color: #0B1C3D; /* Dark Navy */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 194, 66, 0.3); /* Gold glow */
+            border-color: #ffd75c; /* Light Gold */
+        }
+
+        .logo-container {
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            object-fit: contain;
+            box-shadow: 0 5px 15px rgba(5, 16, 36, 0.8); /* Dark overlay */
+            border: 2px solid #F5C242; /* Primary Gold */
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #FFFFFF; /* White primary text */
+        }
+
+        .header h1 span {
+            color: #F5C242; /* Primary Gold */
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 1.1em;
+            color: #b2c3e0; /* Lighter Blue/Gray */
+        }
+
+        .form-container {
+            padding: 30px 30px;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid rgba(245, 194, 66, 0.2); /* Gold border with opacity */
+            border-radius: 12px;
+            background: rgba(15, 42, 90, 0.4); /* Navy with opacity */
+            color: #94a9d1; /* Light Blue/Gray */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .role-btn:hover {
+            border-color: #F5C242; /* Primary Gold */
+            background: rgba(245, 194, 66, 0.1); /* Gold with opacity */
+            color: #FFFFFF;
+        }
+
+        .role-btn.active {
+            background: linear-gradient(145deg, #F5C242, #D4A017); /* Primary gold gradient */
+            color: #0B1C3D; /* Dark Navy */
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(245, 194, 66, 0.3); /* Gold glow */
+        }
+
+        .role-btn.active span {
+            color: #0B1C3D; /* Dark Navy */
+        }
+
+        .info-box {
+            background: rgba(15, 42, 90, 0.6); /* Navy with opacity */
+            border-left: 4px solid #F5C242; /* Primary Gold */
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            color: #b2c3e0; /* Lighter Blue/Gray */
+            line-height: 1.6;
+            border: 1px solid rgba(245, 194, 66, 0.15); /* Gold border */
+            backdrop-filter: blur(5px);
+        }
+
+        .info-box.owner-info {
+            border-left-color: #ffd75c; /* Light Gold */
+        }
+
+        .info-box i {
+            font-style: normal;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: #F5C242; /* Primary Gold */
+        }
+
+        .info-box ul {
+            margin: 10px 0 0 20px;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+            color: #94a9d1; /* Light Blue/Gray */
+        }
+
+        .info-box li::marker {
+            color: #F5C242; /* Primary Gold */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #FFFFFF; /* White primary text */
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(245, 194, 66, 0.15); /* Gold border with opacity */
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: rgba(15, 42, 90, 0.4); /* Navy with opacity */
+            color: #FFFFFF; /* White text */
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group input::placeholder {
+            color: #94a9d1; /* Light Blue/Gray */
+            opacity: 0.6;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #F5C242; /* Primary Gold */
+            background: rgba(15, 42, 90, 0.6); /* Navy with higher opacity */
+            box-shadow: 0 0 0 4px rgba(245, 194, 66, 0.1); /* Gold glow */
+        }
+
+        .form-group input.error {
+            border-color: #f56565; /* Red/Error */
+            background: rgba(245, 101, 101, 0.1); /* Red with opacity */
+        }
+
+        .error-message {
+            color: #f56565; /* Red/Error */
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .phone-hint {
+            font-size: 0.85em;
+            color: #94a9d1; /* Light Blue/Gray */
+            margin-top: 5px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(145deg, #F5C242, #D4A017); /* Primary gold gradient */
+            color: #0B1C3D; /* Dark Navy */
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(245, 194, 66, 0.2); /* Gold glow */
+        }
+
+        .btn-register.owner-mode {
+            background: linear-gradient(145deg, #e5b322, #D4A017); /* Yellow variant gradient */
+        }
+
+        .btn-register:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background: #ffd75c; /* Light Gold hover */
+            box-shadow: 0 15px 30px rgba(245, 194, 66, 0.4); /* Stronger gold glow */
+        }
+
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(245, 194, 66, 0.15); /* Gold border */
+        }
+
+        .login-link a {
+            color: #F5C242; /* Primary Gold */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #ffd75c; /* Light Gold */
+            text-decoration: underline;
+        }
+
+        .terms {
+            margin: 20px 0;
+            font-size: 0.95em;
+            color: #94a9d1; /* Light Blue/Gray */
+        }
+
+        .terms input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+            cursor: pointer;
+            accent-color: #F5C242; /* Gold checkbox */
+        }
+
+        .terms label {
+            cursor: pointer;
+            color: #b2c3e0; /* Lighter Blue/Gray */
+        }
+
+        .terms a {
+            color: #F5C242; /* Primary Gold */
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+            color: #ffd75c; /* Light Gold */
+        }
+
+        .help-center {
+            margin-top: 20px;
+            border-top: 1px solid rgba(245, 194, 66, 0.15); /* Gold border */
+            padding-top: 20px;
+        }
+
+        .help-toggle {
+            background: rgba(15, 42, 90, 0.4); /* Navy with opacity */
+            border: 1px solid rgba(245, 194, 66, 0.2); /* Gold border */
+            border-radius: 12px;
+            padding: 12px 20px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #F5C242; /* Primary Gold */
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .help-toggle:hover {
+            background: rgba(245, 194, 66, 0.1); /* Gold with opacity */
+            border-color: #F5C242;
+        }
+
+        .help-toggle .arrow {
+            transition: transform 0.3s ease;
+            color: #F5C242;
+        }
+
+        .help-toggle.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .help-content {
+            display: none;
+            padding: 20px;
+            background: rgba(15, 42, 90, 0.6); /* Navy with opacity */
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid rgba(245, 194, 66, 0.15); /* Gold border */
+            backdrop-filter: blur(5px);
+        }
+
+        .help-content.show {
+            display: block;
+        }
+
+        .help-section {
+            margin-bottom: 20px;
+        }
+
+        .help-section h4 {
+            color: #F5C242; /* Primary Gold */
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .help-section p {
+            color: #94a9d1; /* Light Blue/Gray */
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            background: rgba(15, 42, 90, 0.8); /* Navy with opacity */
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid rgba(245, 194, 66, 0.2); /* Gold border */
+        }
+
+        .contact-info h4 {
+            color: #F5C242; /* Primary Gold */
+            margin-bottom: 10px;
+        }
+
+        .contact-info p {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #b2c3e0; /* Lighter Blue/Gray */
+        }
+
+        .contact-info i {
+            font-style: normal;
+            font-weight: 600;
+            color: #F5C242; /* Primary Gold */
+        }
+
+        .contact-badge {
+            display: inline-block;
+            background: linear-gradient(145deg, #48bb78, #2f855a); /* Green success gradient */
+            color: #FFFFFF;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: #FFFFFF;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+            display: none;
+            max-width: 400px;
+            border: 1px solid rgba(245, 194, 66, 0.3); /* Gold border */
+            box-shadow: 0 5px 20px rgba(5, 16, 36, 0.8); /* Dark overlay */
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #48bb78, #2f855a); /* Green success gradient */
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #f56565, #c53030); /* Red error gradient */
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #63B3ED, #4299E1); /* Blue info gradient */
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #ed8936, #c05621); /* Orange warning gradient */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(11, 28, 61, 0.3); /* Dark Navy with opacity */
+            border-radius: 50%;
+            border-top-color: #0B1C3D; /* Dark Navy */
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(15, 42, 90, 0.4); /* Navy with opacity */
+            color: #94a9d1; /* Light Blue/Gray */
+            font-size: 0.9em;
+            border-top: 1px solid rgba(245, 194, 66, 0.15); /* Gold border */
+        }
+
+        .server-status {
+            font-size: 0.9em;
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .server-status.connected {
+            color: #68D391; /* Light Green success */
+        }
+
+        .server-status.disconnected {
+            color: #FC8181; /* Light Red error */
+        }
+
+        /* Status color examples for future use */
+        .status-success { color: #48bb78; }
+        .status-success-dark { color: #2f855a; }
+        .status-success-light { color: #68D391; }
+        
+        .status-error { color: #f56565; }
+        .status-error-dark { color: #c53030; }
+        .status-error-light { color: #FC8181; }
+        
+        .status-warning { color: #ed8936; }
+        .status-warning-dark { color: #c05621; }
+        
+        .status-info { color: #63B3ED; }
+        .status-info-dark { color: #4299E1; }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+                padding-top: 60px; /* Make room for home button */
+            }
+            
+            .home-button {
+                top: 15px;
+                left: 15px;
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .role-selector {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .notification {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+
+    <div class="container">
+        <div class="header">
+            <!-- Go to Home Button -->
+            <button class="home-button" onclick="goToHome()">
+                <span>🏠</span> Go to Home
+            </button>
+            
+            <div class="logo-container">
+                <img id="logo" class="logo" src="" alt="YIDANA HOSTELS Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGNUMyNDIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMyA5bDktN2w5IDd2MTFhMiAyIDAgMCAxLTIgMkg1YTIgMiAwIDAgMS0yLTJ6Ii8+PHBvbHlsaW5lIHBvaW50cz0iOSAyMiA5IDEyIDE1IDEyIDE1IDIyIi8+PC9zdmc+'">
+            </div>
+            <h1>YIDANA <span>HOSTELS</span></h1>
+            <p>Find Your Perfect Student Accommodation</p>
+            <div id="serverStatus" class="server-status">Checking server connection...</div>
+        </div>
+
+        <div class="form-container">
+            <div class="role-selector">
+                <button type="button" class="role-btn student active" onclick="setRole('student')">
+                    <span>🎓</span> Student
+                </button>
+                <button type="button" class="role-btn owner" onclick="setRole('owner')">
+                    <span>🏢</span> Hostel Owner
+                </button>
+            </div>
+
+            <div id="studentInfo" class="info-box">
+                <i>📋 Student Registration Guide:</i>
+                <ul>
+                    <li>Fill in your details correctly</li>
+                    <li>Use a valid email address - your login credentials will be sent there</li>
+                    <li>Provide a working Ghana mobile number (024XXXXXXX format)</li>
+                    <li>After registration, you'll receive your User ID and PIN instantly via email please do not share thiswith anyone for your own Safty</li>
+                    <li>Use these credentials to log in and start booking hostels</li>
+                    <Li>DO NOT PAY ANY MONEY TO ANYONE FOR ANY REASON ALL PAYMENTS ARE TO BE MADE TO THE HOSTELS PHYSICALY ⚠️⚠️</Li>
+                </ul>
+            </div>
+            
+            <div id="ownerInfo" class="info-box owner-info" style="display: none;">
+                <i>🏢 Hostel Owner Registration Guide:</i>
+                <ul>
+                    <li>Register with your business/owner details</li>
+                    <li>Use your official email address</li>
+                    <li>Provide a valid contact number</li>
+                    <li>After submission, your account will be reviewed by admin</li>
+                    <li>You'll receive an email with your login credentials (User ID starts with OWN) once approved</li>
+                    <li>Approval typically takes 24-48 hours</li>
+                </ul>
+            </div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="fullName">
+                        <span id="nameLabel">📝 Full Name</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        placeholder="Enter your full name"
+                        required
+                        minlength="2"
+                        maxlength="50"
+                    >
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="you@example.com"
+                        required
+                    >
+                    <div class="error-message" id="emailError"></div>
+                    <div class="phone-hint">We'll send your login credentials to this email</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">📱 Mobile Number</label>
+                    <input 
+                        type="tel" 
+                        id="mobile" 
+                        name="mobile" 
+                        placeholder="024XXXXXXX"
+                        pattern="[0-9]{10}"
+                        title="Please enter a valid 10-digit mobile number"
+                        required
+                    >
+                    <div class="phone-hint">Ghana number format: 024XXXXXXX (10 digits)</div>
+                    <div class="error-message" id="mobileError"></div>
+                </div>
+
+                <div class="terms">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#" onclick="showTerms(event)">Terms of Service</a> and 
+                        <a href="#" onclick="showPrivacy(event)">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="button" class="btn-register" id="registerBtn" onclick="handleRegister()">
+                    <span class="loader hidden" id="loader"></span>
+                    <span id="btnText">Register as Student</span>
+                </button>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="login.html">Login here</a>
+            </div>
+
+            <!-- Help Center Section -->
+            <div class="help-center">
+                <div class="help-toggle" onclick="toggleHelp()">
+                    <span>❓ Need Help? Visit Our Help Center</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="help-content" id="helpContent">
+                    <div class="help-section">
+                        <h4>🎓 For Students:</h4>
+                        <p>• After registration, check your email (including spam folder) for your User ID and PIN</p>
+                        <p>• Your User ID will start with "STU" followed by random characters (e.g., STU3A7F9B)</p>
+                        <p>• Your PIN will be 8 random characters (e.g., 4B7D9F2C)</p>
+                        <p>• Use these credentials to log in and browse available hostels</p>
+                        <p>• You can book rooms directly through the platform</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h4>🏢 For Hostel Owners:</h4>
+                        <p>• Registration requires admin approval (24-48 hours)</p>
+                        <p>• You'll receive email notification once approved</p>
+                        <p>• After approval, you'll receive your User ID (starts with "OWN") and PIN</p>
+                        <p>• Then you can log in and start adding your hostels and rooms</p>
+                        <p>• You can set total beds per room and system tracks availability automatically</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h4>📱 Having Registration Issues?</h4>
+                        <p>• Make sure your backend server is running on <strong>port 5000</strong></p>
+                        <p>• Run: <code>node server.js</code> in your terminal</p>
+                        <p>• Make sure you're using a valid email address</p>
+                        <p>• Ghana mobile numbers must start with 02, 05, or 0[2-5] and be 10 digits</p>
+                        <p>• Check your spam folder for registration emails</p>
+                        <p>• If you don't receive email within 10 to 20 minutes, contact support</p>
+                    </div>
+
+                    <div class="contact-info">
+                        <h4>📞 Still Need Assistance?</h4>
+                        <p><i>📧 Email:</i> yidanavictor@gmail.com <span class="contact-badge">24/7 Support</span></p>
+                        <p><i>📱 Phone/WhatsApp:</i> 0594433667 <span class="contact-badge">8AM - 8PM</span></p>
+                        <p><i>⏰ Response Time:</i> Within 2 hours during working hours</p>
+                        <p><i>📍 Location:</i> UG & UPSA Area, Accra</p>
+                        <p style="margin-top: 10px; color: #F5C242;">💡 We're here to help! Don't hesitate to contact us.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 YIDANA HOSTELS. Connecting UG & UPSA Students with Quality Hostels</p>
+        </div>
+    </div>
+
+    <script>
+        // Current role (student or owner)
+        let currentRole = 'student';
+        let settings = {};
+
+        // Go to Home function
+        function goToHome() {
+            window.location.href = 'index.html'; // Assuming your home page is index.html
+        }
+
+        // Check server connection
+        async function checkServerConnection() {
+            const statusDiv = document.getElementById('serverStatus');
+            try {
+                const response = await fetch('http://localhost:5000/api', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = '✅ Connected to server - ' + data.message;
+                    statusDiv.style.color = '#68D391';
+                    return true;
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                console.error('Server connection error:', error);
+                statusDiv.innerHTML = '❌ Cannot connect to server. Make sure it\'s running on port 5000';
+                statusDiv.style.color = '#FC8181';
+                return false;
+            }
+        }
+
+        // Load logo and settings from server
+        async function loadSettings() {
+            try {
+                const isConnected = await checkServerConnection();
+                if (!isConnected) return;
+                
+                const response = await fetch('http://localhost:5000/api/settings');
+                if (response.ok) {
+                    settings = await response.json();
+                    const logoImg = document.getElementById('logo');
+                    if (settings.logoUrl) {
+                        logoImg.src = 'http://localhost:5000' + settings.logoUrl;
+                    }
+                    console.log('Settings loaded:', settings);
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Toggle help section
+        function toggleHelp() {
+            const helpContent = document.getElementById('helpContent');
+            const helpToggle = document.querySelector('.help-toggle');
+            
+            if (helpContent.classList.contains('show')) {
+                helpContent.classList.remove('show');
+                helpToggle.classList.remove('active');
+            } else {
+                helpContent.classList.add('show');
+                helpToggle.classList.add('active');
+            }
+        }
+
+        // Set role (student/owner)
+        function setRole(role) {
+            currentRole = role;
+            
+            // Update button styles
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (role === 'student') {
+                document.querySelector('.role-btn.student').classList.add('active');
+                document.getElementById('studentInfo').style.display = 'block';
+                document.getElementById('ownerInfo').style.display = 'none';
+                document.getElementById('registerBtn').classList.remove('owner-mode');
+                document.getElementById('btnText').textContent = 'Register as Student';
+                document.getElementById('nameLabel').innerHTML = '📝 Full Name';
+            } else {
+                document.querySelector('.role-btn.owner').classList.add('active');
+                document.getElementById('studentInfo').style.display = 'none';
+                document.getElementById('ownerInfo').style.display = 'block';
+                document.getElementById('registerBtn').classList.add('owner-mode');
+                document.getElementById('btnText').textContent = 'Register as Owner';
+                document.getElementById('nameLabel').innerHTML = '🏢 Business/Owner Name';
+            }
+        }
+
+        // Validate email format
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Validate Ghana mobile number
+        function validateMobile(mobile) {
+            const re = /^(0[2-5][0-9]{8})$/;
+            return re.test(mobile);
+        }
+
+        // Show terms
+        function showTerms(event) {
+            event.preventDefault();
+            showNotification('By registering, you agree to our Terms of Service which outline your rights and responsibilities when using YIDANA HOSTELS.', 'info');
+        }
+
+        // Show privacy policy
+        function showPrivacy(event) {
+            event.preventDefault();
+            showNotification('Your privacy matters. We only use your data for account management and booking purposes. We never share your information with third parties.', 'info');
+        }
+
+        // Handle registration
+        async function handleRegister() {
+            // Check server connection first
+            const isConnected = await checkServerConnection();
+            if (!isConnected) {
+                showNotification('❌ Cannot connect to server. Please make sure it\'s running on port 5000', 'error');
+                return;
+            }
+            
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const terms = document.getElementById('terms').checked;
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            // Validation
+            let isValid = true;
+            
+            if (!fullName) {
+                document.getElementById('nameError').textContent = 'Name is required';
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                document.getElementById('nameError').textContent = 'Name must be at least 2 characters';
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!email) {
+                document.getElementById('emailError').textContent = 'Email is required';
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!mobile) {
+                document.getElementById('mobileError').textContent = 'Mobile number is required';
+                document.getElementById('mobileError').classList.add('show');
+                isValid = false;
+            } else if (!validateMobile(mobile)) {
+                document.getElementById('mobileError').textContent = 'Please enter a valid Ghana mobile number (e.g., 024XXXXXXX)';
+                document.getElementById('mobileError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!terms) {
+                showNotification('Please agree to the Terms and Conditions', 'error');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Show loading state
+            const registerBtn = document.getElementById('registerBtn');
+            const loader = document.getElementById('loader');
+            const btnText = document.getElementById('btnText');
+            
+            registerBtn.disabled = true;
+            loader.classList.remove('hidden');
+            btnText.textContent = currentRole === 'student' ? 'Creating Account...' : 'Submitting for Approval...';
+            
+            try {
+                // Prepare registration data
+                const userData = {
+                    name: fullName,
+                    email: email,
+                    mobile: mobile
+                };
+                
+                // Determine endpoint based on role
+                const endpoint = currentRole === 'student' ? '/api/students/register' : '/api/owners/register';
+                const fullUrl = `http://localhost:5000${endpoint}`;
+                
+                console.log('Sending request to:', fullUrl);
+                console.log('With data:', userData);
+                
+                // Make API call
+                const response = await fetch(fullUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                // Get response text
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                
+                // Try to parse JSON
+                let data;
+                try {
+                    data = responseText ? JSON.parse(responseText) : {};
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    throw new Error('Server returned invalid response');
+                }
+                
+                if (response.ok && data.success) {
+                    if (currentRole === 'student') {
+                        // Store token for student
+                        if (data.token) {
+                            localStorage.setItem('token', data.token);
+                            localStorage.setItem('user', JSON.stringify(data.user));
+                        }
+                        
+                        showNotification('✅ Registration successful! Check your email for login credentials.', 'success');
+                        
+                        // Show help tip
+                        setTimeout(() => {
+                            showNotification('💡 Tip: Check your spam folder if you don\'t see the email in your inbox', 'info');
+                        }, 2000);
+                        
+                        // Redirect to student dashboard
+                        setTimeout(() => {
+                            window.location.href = 'student-dashboard.html';
+                        }, 4000);
+                    } else {
+                        // Owner registration pending
+                        showNotification('✅ Registration submitted! Await admin approval. You\'ll receive an email once approved.', 'success');
+                        
+                        // Show help tip
+                        setTimeout(() => {
+                            showNotification('⏰ Approval typically takes 24-48 hours. We\'ll notify you via email.', 'info');
+                        }, 2000);
+                        
+                        // Redirect to login page
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 5000);
+                    }
+                } else {
+                    // Handle error response
+                    let errorMessage = data.message || 'Registration failed';
+                    
+                    if (response.status === 400 && errorMessage.includes('Email already registered')) {
+                        errorMessage = 'This email is already registered. Please use a different email or try logging in.';
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 3000);
+                    }
+                    
+                    showNotification('❌ ' + errorMessage, 'error');
+                    
+                    // Re-enable button
+                    registerBtn.disabled = false;
+                    loader.classList.add('hidden');
+                    btnText.textContent = currentRole === 'student' ? 'Register as Student' : 'Register as Owner';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                showNotification('❌ Cannot connect to server. Please ensure the server is running on port 5000.', 'error');
+                
+                // Show help with contact info
+                setTimeout(() => {
+                    showNotification('📞 Contact us: 0594433667 or yidanapparentconect@gmail.com', 'info');
+                }, 3000);
+                
+                // Re-enable button
+                registerBtn.disabled = false;
+                loader.classList.add('hidden');
+                btnText.textContent = currentRole === 'student' ? 'Register as Student' : 'Register as Owner';
+            }
+        }
+
+        // Check if user is already logged in
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const adminToken = localStorage.getItem('adminToken');
+            
+            if (token) {
+                try {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    if (user.role === 'student') {
+                        window.location.href = 'student-dashboard.html';
+                    } else if (user.role === 'owner') {
+                        window.location.href = 'owner-dashboard.html';
+                    }
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                }
+            } else if (adminToken) {
+                window.location.href = 'admin-dashboard.html';
+            }
+        }
+
+        // Load settings and check auth on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            checkAuth();
+            
+            // Add input validation styling
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.value && this.checkValidity()) {
+                        this.style.borderColor = '#68D391'; // Light Green success
+                    } else if (this.value) {
+                        this.style.borderColor = '#f56565'; // Red error
+                    }
+                });
+                
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#F5C242'; // Primary Gold
+                });
+            });
+
+            // Prevent form submission on enter key
+            document.getElementById('registerForm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleRegister();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

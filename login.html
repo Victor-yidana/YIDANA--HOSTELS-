@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - YIDANA HOSTELS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            background: #0B1C3D;
+            background: radial-gradient(circle at 10% 20%, #0F2A5A, #0B1C3D);
+        }
+
+        /* Decorative Elements */
+        .bg-ornament {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-ornament::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 194, 66, 0.03) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        .bg-ornament::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 194, 66, 0.02) 0%, transparent 50%);
+            animation: rotate 40s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .glow-card {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(245, 194, 66, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 0;
+        }
+
+        .glow-1 {
+            top: -100px;
+            left: -100px;
+        }
+
+        .glow-2 {
+            bottom: -100px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(15, 42, 90, 0.4) 0%, transparent 70%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card {
+            background: rgba(11, 28, 61, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 194, 66, 0.15);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 194, 66, 0.1);
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 32px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(15, 42, 90, 0.4) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(245, 194, 66, 0.1);
+        }
+
+        .logo-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: linear-gradient(145deg, #F5C242, #D4A017);
+            border-radius: 30px;
+            padding: 3px;
+            box-shadow: 0 10px 20px -5px rgba(245, 194, 66, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 27px;
+            background: #0B1C3D;
+            display: block;
+        }
+
+        .logo-fallback {
+            width: 100%;
+            height: 100%;
+            background: #0B1C3D;
+            border-radius: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: bold;
+            color: #F5C242;
+        }
+
+        .logo-fallback.hidden {
+            display: none;
+        }
+
+        .header h1 {
+            color: #FFFFFF;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #94a9d1;
+            font-size: 15px;
+        }
+
+        .server-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(15, 42, 90, 0.6);
+            border: 1px solid rgba(245, 194, 66, 0.15);
+            border-radius: 40px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .server-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+            box-shadow: 0 0 10px #48bb78;
+            animation: pulse 2s infinite;
+        }
+
+        .server-status-dot.checking {
+            background: #ed8936;
+            box-shadow: 0 0 10px #ed8936;
+        }
+
+        .server-status-dot.disconnected {
+            background: #f56565;
+            box-shadow: 0 0 10px #f56565;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .server-text {
+            color: #b2c3e0;
+        }
+
+        /* Form Container */
+        .form-container {
+            padding: 32px;
+        }
+
+        /* Role Selector */
+        .role-selector {
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            background: rgba(15, 42, 90, 0.6);
+            border: 1px solid rgba(245, 194, 66, 0.1);
+            border-radius: 60px;
+            margin-bottom: 24px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 60px;
+            background: transparent;
+            color: #94a9d1;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .role-btn.active {
+            background: linear-gradient(145deg, #F5C242, #D4A017);
+            color: #0B1C3D;
+            box-shadow: 0 5px 15px rgba(245, 194, 66, 0.3);
+        }
+
+        /* Info Box */
+        .info-box {
+            padding: 16px;
+            background: rgba(245, 194, 66, 0.1);
+            border: 1px solid rgba(245, 194, 66, 0.2);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .info-box.show {
+            display: block;
+        }
+
+        .info-box strong {
+            color: #F5C242;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .info-box p {
+            color: #b2c3e0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b2c3e0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #F5C242;
+            font-size: 18px;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            background: rgba(15, 42, 90, 0.4);
+            border: 1px solid rgba(245, 194, 66, 0.15);
+            border-radius: 16px;
+            color: #FFFFFF;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #94a9d1;
+            opacity: 0.5;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #F5C242;
+            background: rgba(15, 42, 90, 0.6);
+            box-shadow: 0 0 0 4px rgba(245, 194, 66, 0.1);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #94a9d1;
+            font-size: 18px;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #F5C242;
+        }
+
+        .error-message {
+            color: #f56565;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .forgot-link {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-link a {
+            color: #94a9d1;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link a:hover {
+            color: #F5C242;
+        }
+
+        /* Login Button */
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(145deg, #F5C242, #D4A017);
+            border: none;
+            border-radius: 60px;
+            color: #0B1C3D;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-login:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 194, 66, 0.4);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Register Links */
+        .register-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(245, 194, 66, 0.1);
+            text-align: center;
+        }
+
+        .register-section p {
+            color: #94a9d1;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .register-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .register-btn {
+            flex: 1;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid rgba(245, 194, 66, 0.2);
+            border-radius: 60px;
+            color: #b2c3e0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .register-btn:hover {
+            background: rgba(245, 194, 66, 0.1);
+            border-color: #F5C242;
+            color: #F5C242;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 24px 32px;
+            text-align: center;
+            background: rgba(15, 42, 90, 0.4);
+            border-top: 1px solid rgba(245, 194, 66, 0.1);
+        }
+
+        .footer p {
+            color: #94a9d1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: #94a9d1;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #F5C242;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: rgba(11, 28, 61, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 194, 66, 0.2);
+            border-radius: 60px;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.success {
+            border-color: #48bb78;
+            box-shadow: 0 0 20px rgba(72, 187, 120, 0.2);
+        }
+
+        .notification.error {
+            border-color: #f56565;
+            box-shadow: 0 0 20px rgba(245, 101, 101, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loader */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(11, 28, 61, 0.2);
+            border-radius: 50%;
+            border-top-color: #0B1C3D;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Connection Help */
+        .connection-help {
+            padding: 16px;
+            background: rgba(245, 194, 66, 0.1);
+            border: 1px solid rgba(245, 194, 66, 0.2);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            color: #b2c3e0;
+            font-size: 13px;
+            display: none;
+        }
+
+        .connection-help.show {
+            display: block;
+        }
+
+        .connection-help strong {
+            color: #F5C242;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .connection-help ol {
+            margin: 8px 0 0 20px;
+        }
+
+        .connection-help li {
+            margin: 4px 0;
+        }
+
+        .connection-help code {
+            background: rgba(15, 42, 90, 0.6);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: #F5C242;
+        }
+
+        /* Logo Loading States */
+        .logo-loading {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #0F2A5A 25%, #1a3a7a 50%, #0F2A5A 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 27px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 32px 24px;
+            }
+            
+            .form-container {
+                padding: 24px;
+            }
+            
+            .footer {
+                padding: 20px 24px;
+            }
+            
+            .register-buttons {
+                flex-direction: column;
+            }
+            
+            .notification {
+                left: 24px;
+                right: 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-ornament"></div>
+    <div class="glow-card glow-1"></div>
+    <div class="glow-card glow-2"></div>
+
+    <div class="notification" id="notification"></div>
+
+    <div class="container">
+        <div class="login-card">
+            <div class="header">
+                <div class="logo-wrapper" id="logoWrapper">
+                    <img id="logoImage" class="logo-image hidden" src="" alt="YIDANA HOSTELS Logo" onload="onLogoLoad()" onerror="onLogoError()">
+                    <div id="logoFallback" class="logo-fallback">YH</div>
+                    <div id="logoLoading" class="logo-loading hidden"></div>
+                </div>
+                <h1>YIDANA HOSTELS</h1>
+                <p>Welcome back! Please enter your details</p>
+                <div class="server-badge" id="serverStatus">
+                    <span class="server-status-dot checking" id="statusDot"></span>
+                    <span class="server-text" id="statusText">Checking connection...</span>
+                </div>
+            </div>
+
+            <div class="form-container">
+                <!-- Connection Help -->
+                <div id="connectionHelp" class="connection-help">
+                    <strong>⚠️ Connection Error</strong>
+                    <p>Unable to connect to server. Please ensure:</p>
+                    <ol>
+                        <li>Backend server is running: <code>node server.js</code></li>
+                        <li>Server is running on port 5000</li>
+                        <li>No firewall blocking the connection</li>
+                    </ol>
+                </div>
+
+                <!-- Role Selector -->
+                <div class="role-selector">
+                    <button class="role-btn active" onclick="setRole('student')">
+                        <span>🎓</span> Student
+                    </button>
+                    <button class="role-btn" onclick="setRole('owner')">
+                        <span>🏢</span> Owner
+                    </button>
+                    <button class="role-btn" onclick="setRole('admin')">
+                        <span>👑</span> Admin
+                    </button>
+                </div>
+
+                <!-- Info Boxes -->
+                <div id="studentInfo" class="info-box show">
+                    <strong>🎓 Student Login</strong>
+                    <p>Use your Student ID and the PIN sent to your registered email.</p>
+                </div>
+
+                <div id="ownerInfo" class="info-box">
+                    <strong>🏢 Owner Login</strong>
+                    <p>Use your Owner ID and the PIN provided after admin approval.</p>
+                </div>
+
+                <div id="adminInfo" class="info-box">
+                    <strong>👑 Admin Login</strong>
+                    <p>For authorized administrators only.</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="userId" id="userIdLabel">User ID</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon" id="userIdIcon">🎓</span>
+                            <input type="text" id="userId" placeholder="Enter your User ID" autocomplete="off">
+                        </div>
+                        <div class="error-message" id="userIdError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPin">PIN</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="userPin" placeholder="Enter your PIN" autocomplete="off">
+                            <span class="password-toggle" onclick="togglePassword()">👁️</span>
+                        </div>
+                        <div class="forgot-link">
+                            <a href="#" onclick="forgotPassword(event)">Forgot PIN?</a>
+                        </div>
+                        <div class="error-message" id="pinError"></div>
+                    </div>
+
+                    <button type="button" class="btn-login" id="loginBtn" onclick="handleLogin()">
+                        <span class="loader hidden" id="loader"></span>
+                        <span id="btnText">Sign In</span>
+                    </button>
+                </form>
+
+                <!-- Register Section -->
+                <div class="register-section">
+                    <p>Don't have an account?</p>
+                    <div class="register-buttons">
+                        <a href="register.html?type=student" class="register-btn">
+                            <span>🎓</span> Student
+                        </a>
+                        <a href="register.html?type=owner" class="register-btn">
+                            <span>🏢</span> Owner
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>© 2024 YIDANA HOSTELS. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#" onclick="showTerms(event)">Terms</a>
+                    <a href="#" onclick="showPrivacy(event)">Privacy</a>
+                    <a href="#" onclick="showHelp(event)">Help</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+        let currentRole = 'student';
+        let connectionCheckInterval = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServerConnection();
+            loadLogo();
+            checkAuth();
+            
+            // Check connection every 30 seconds
+            connectionCheckInterval = setInterval(checkServerConnection, 30000);
+        });
+
+        // Clean up interval on page unload
+        window.addEventListener('beforeunload', function() {
+            if (connectionCheckInterval) {
+                clearInterval(connectionCheckInterval);
+            }
+        });
+
+        // Server Connection Check
+        async function checkServerConnection() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const helpDiv = document.getElementById('connectionHelp');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    mode: 'cors'
+                });
+
+                if (response.ok) {
+                    statusDot.className = 'server-status-dot';
+                    statusText.textContent = 'Connected to server';
+                    helpDiv.classList.remove('show');
+                    return true;
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                console.error('Server connection error:', error);
+                statusDot.className = 'server-status-dot disconnected';
+                statusText.textContent = 'Cannot connect to server';
+                helpDiv.classList.add('show');
+                return false;
+            }
+        }
+
+        // Load Logo from Server
+        async function loadLogo() {
+            const logoImage = document.getElementById('logoImage');
+            const logoFallback = document.getElementById('logoFallback');
+            const logoLoading = document.getElementById('logoLoading');
+            
+            // Show loading state
+            logoImage.classList.add('hidden');
+            logoFallback.classList.add('hidden');
+            logoLoading.classList.remove('hidden');
+            
+            try {
+                // First try to get settings
+                const response = await fetch(`${API_BASE_URL}/api/settings`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const settings = await response.json();
+                    
+                    // Check if logo URL exists in settings
+                    if (settings && settings.logoUrl) {
+                        // Construct full logo URL
+                        const logoUrl = settings.logoUrl.startsWith('http') 
+                            ? settings.logoUrl 
+                            : `${API_BASE_URL}${settings.logoUrl}`;
+                        
+                        // Set logo source and show it
+                        logoImage.src = logoUrl;
+                        logoImage.classList.remove('hidden');
+                        logoLoading.classList.add('hidden');
+                    } else {
+                        // No logo URL in settings, use fallback
+                        useFallbackLogo();
+                    }
+                } else {
+                    // Server responded but no settings
+                    useFallbackLogo();
+                }
+            } catch (error) {
+                console.error('Error loading logo:', error);
+                // Network error or server unavailable, use fallback
+                useFallbackLogo();
+            }
+        }
+
+        // Use fallback logo (YH text)
+        function useFallbackLogo() {
+            const logoImage = document.getElementById('logoImage');
+            const logoFallback = document.getElementById('logoFallback');
+            const logoLoading = document.getElementById('logoLoading');
+            
+            logoImage.classList.add('hidden');
+            logoLoading.classList.add('hidden');
+            logoFallback.classList.remove('hidden');
+        }
+
+        // Called when logo successfully loads
+        function onLogoLoad() {
+            const logoImage = document.getElementById('logoImage');
+            const logoFallback = document.getElementById('logoFallback');
+            const logoLoading = document.getElementById('logoLoading');
+            
+            logoLoading.classList.add('hidden');
+            logoFallback.classList.add('hidden');
+            logoImage.classList.remove('hidden');
+        }
+
+        // Called when logo fails to load
+        function onLogoError() {
+            console.error('Logo failed to load, using fallback');
+            useFallbackLogo();
+        }
+
+        // Set Role
+        function setRole(role) {
+            currentRole = role;
+
+            // Update active button
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update info boxes
+            document.getElementById('studentInfo').classList.remove('show');
+            document.getElementById('ownerInfo').classList.remove('show');
+            document.getElementById('adminInfo').classList.remove('show');
+            document.getElementById(`${role}Info`).classList.add('show');
+
+            // Update input fields based on role
+            const userIdInput = document.getElementById('userId');
+            const userIdIcon = document.getElementById('userIdIcon');
+            const userIdLabel = document.getElementById('userIdLabel');
+
+            if (role === 'student') {
+                userIdInput.placeholder = 'Enter Student ID (e.g., STU001)';
+                userIdLabel.textContent = 'Student ID';
+                userIdIcon.textContent = '🎓';
+            } else if (role === 'owner') {
+                userIdInput.placeholder = 'Enter Owner ID (e.g., OWN001)';
+                userIdLabel.textContent = 'Owner ID';
+                userIdIcon.textContent = '🏢';
+            } else {
+                userIdInput.placeholder = 'Enter Admin ID';
+                userIdLabel.textContent = 'Admin ID';
+                userIdIcon.textContent = '👑';
+            }
+        }
+
+        // Toggle Password Visibility
+        function togglePassword() {
+            const pinInput = document.getElementById('userPin');
+            const type = pinInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pinInput.setAttribute('type', type);
+        }
+
+        // Show Notification
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Handle Login
+        async function handleLogin() {
+            const isConnected = await checkServerConnection();
+            if (!isConnected) {
+                showNotification('Cannot connect to server. Please check your connection.', 'error');
+                return;
+            }
+
+            const userId = document.getElementById('userId').value.trim();
+            const userPin = document.getElementById('userPin').value.trim();
+
+            // Reset error messages
+            document.getElementById('userIdError').classList.remove('show');
+            document.getElementById('pinError').classList.remove('show');
+
+            // Validate inputs
+            let isValid = true;
+
+            if (!userId) {
+                document.getElementById('userIdError').textContent = 'User ID is required';
+                document.getElementById('userIdError').classList.add('show');
+                isValid = false;
+            }
+
+            if (!userPin) {
+                document.getElementById('pinError').textContent = 'PIN is required';
+                document.getElementById('pinError').classList.add('show');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Show loading state
+            const loginBtn = document.getElementById('loginBtn');
+            const loader = document.getElementById('loader');
+            const btnText = document.getElementById('btnText');
+
+            loginBtn.disabled = true;
+            loader.classList.remove('hidden');
+            btnText.textContent = 'Signing in...';
+
+            try {
+                let response;
+                let data;
+
+                if (currentRole === 'admin') {
+                    // Admin login
+                    response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            id: userId, 
+                            pin: userPin 
+                        })
+                    });
+
+                    data = await response.json();
+
+                    if (response.ok && data.success) {
+                        localStorage.setItem('adminToken', data.token);
+                        localStorage.setItem('adminData', JSON.stringify(data.admin));
+                        showNotification('Login successful! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'admin-dashboard.html';
+                        }, 1500);
+                    } else {
+                        showNotification(data.message || 'Invalid admin credentials', 'error');
+                    }
+                } else {
+                    // Student/Owner login
+                    response = await fetch(`${API_BASE_URL}/api/users/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            userId, 
+                            userPin 
+                        })
+                    });
+
+                    data = await response.json();
+
+                    if (response.ok && data.success) {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        showNotification('Login successful! Redirecting...', 'success');
+                        
+                        setTimeout(() => {
+                            if (data.user.role === 'student') {
+                                window.location.href = 'student-dashboard.html';
+                            } else {
+                                window.location.href = 'owner-dashboard.html';
+                            }
+                        }, 1500);
+                    } else {
+                        showNotification(data.message || 'Invalid credentials', 'error');
+                    }
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('Network error. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                loginBtn.disabled = false;
+                loader.classList.add('hidden');
+                btnText.textContent = 'Sign In';
+            }
+        }
+
+        // Forgot Password
+        function forgotPassword(event) {
+            event.preventDefault();
+            
+            const email = prompt('Please enter your registered email address:');
+            if (email) {
+                // Validate email format
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+                
+                showNotification(`Password reset link sent to ${email}`, 'success');
+                // In production, you would call your API here
+                // await fetch(`${API_BASE_URL}/api/users/forgot-password`, { ... })
+            }
+        }
+
+        // Check Authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const adminToken = localStorage.getItem('adminToken');
+            
+            if (token) {
+                try {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    if (user.role === 'student') {
+                        window.location.href = 'student-dashboard.html';
+                    } else if (user.role === 'owner') {
+                        window.location.href = 'owner-dashboard.html';
+                    }
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+            } else if (adminToken) {
+                window.location.href = 'admin-dashboard.html';
+            }
+        }
+
+        // Helper Functions
+        function showTerms(event) {
+            event.preventDefault();
+            showNotification('Terms of Service - YIDANA HOSTELS platform connecting students with verified hostel owners.', 'info');
+        }
+
+        function showPrivacy(event) {
+            event.preventDefault();
+            showNotification('Privacy Policy - Your data is encrypted and securely stored.', 'info');
+        }
+
+        function showHelp(event) {
+            event.preventDefault();
+            showNotification('Contact support: support@yidana.com or call 0594433667', 'info');
+        }
+
+        // Enter Key Handler
+        document.getElementById('loginForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin();
+            }
+        });
+
+        // Input focus effects
+        document.getElementById('userId').addEventListener('focus', function() {
+            this.parentElement.querySelector('.input-icon').style.opacity = '1';
+        });
+
+        document.getElementById('userId').addEventListener('blur', function() {
+            this.parentElement.querySelector('.input-icon').style.opacity = '0.7';
+        });
+
+        document.getElementById('userPin').addEventListener('focus', function() {
+            this.parentElement.querySelector('.input-icon').style.opacity = '1';
+        });
+
+        document.getElementById('userPin').addEventListener('blur', function() {
+            this.parentElement.querySelector('.input-icon').style.opacity = '0.7';
+        });
+
+
+
+
+
+ </script>
+</body>
+</html>
