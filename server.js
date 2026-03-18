@@ -17,13 +17,35 @@ require('dotenv').config();
 // ==================== INIT APP ====================
 const app = express();
 
-// CORS configuration
+// ==================== UPDATED CORS CONFIGURATION FOR RENDER & GITHUB PAGES ====================
+const allowedOrigins = [
+    'http://localhost:5000',
+    'http://localhost:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'https://victor-yidana.github.io',
+    'https://yidana-hostels.onrender.com'
+];
+
 app.use(cors({
-    origin: '*',
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            console.log('Blocked origin:', origin);
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -114,6 +136,7 @@ const upload = multer({
 });
 
 // ==================== DATABASE MODELS ====================
+// (All your existing models remain exactly the same - I'm keeping them unchanged)
 
 // --- User Schema ---
 const userSchema = new mongoose.Schema({
@@ -521,7 +544,7 @@ const developerSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now }
 });
 
-// ==================== NEW: AI CONVERSATION MODEL ====================
+// ==================== AI CONVERSATION MODEL ====================
 const conversationSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     userRole: { type: String, enum: ['student', 'owner', 'admin'] },
@@ -744,7 +767,7 @@ function calculateExpectedCheckOut(moveInDate, duration) {
 
 mongoose.connection.once('open', initializeDeveloperProfile);
 
-// ==================== NEW: DEEPSEEK AI CLIENT ====================
+// ==================== DEEPSEEK AI CLIENT ====================
 class DeepSeekClient {
     constructor() {
         this.apiKey = process.env.DEEPSEEK_API_KEY;
@@ -893,7 +916,7 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-// ==================== NEW: AI ASSISTANT ROUTES ====================
+// ==================== AI ASSISTANT ROUTES ====================
 
 // Start or continue AI conversation
 app.post('/api/ai/chat', authenticateToken, async (req, res) => {
@@ -1034,7 +1057,7 @@ app.delete('/api/ai/conversations/:conversationId', authenticateToken, async (re
 });
 
 // ==================== EXISTING API ROUTES ====================
-// (All your existing routes remain exactly as they were)
+// (All your existing routes remain exactly as they were - I'm keeping them all)
 
 // --------------- 1. ADMIN AUTH & MANAGEMENT ---------------
 app.post('/api/admin/login', (req, res) => {
