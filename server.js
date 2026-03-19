@@ -44,12 +44,10 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
 }));
 
-// Handle preflight requests
-app.options('*', cors());
+// ✅ REMOVED the problematic line: app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 // Create directories if they don't exist
 const dirs = ['uploads', 'frontend'];
 dirs.forEach(dir => {
