@@ -84,20 +84,25 @@ mongoose.connect(process.env.MONGO_URI)
 })
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// ==================== NODEMAILER SETUP ====================
+// ==================== BREVO EMAIL SETUP ====================
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: process.env.BREVO_LOGIN,
+        pass: process.env.BREVO_SMTP_KEY
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
 transporter.verify(function(error, success) {
     if (error) {
-        console.log('❌ Email server error:', error);
+        console.log('❌ Brevo email connection error:', error);
     } else {
-        console.log('✅ Email server is ready to send messages');
+        console.log('✅ Brevo email is ready to send messages');
     }
 });
 
@@ -134,7 +139,7 @@ const upload = multer({
 });
 
 // ==================== DATABASE MODELS ====================
-// (All your existing models remain exactly the same - I'm keeping them unchanged)
+// (All your existing models remain exactly the same)
 
 // --- User Schema ---
 const userSchema = new mongoose.Schema({
@@ -878,7 +883,7 @@ cron.schedule('0 0 * * *', async () => {
                 (new Date() - lastPayment.paymentDate) > 30 * 24 * 60 * 60 * 1000) {
                 
                 const mailOptions = {
-                    from: process.env.EMAIL_USER,
+                    from: process.env.BREVO_LOGIN,
                     to: occ.student.email,
                     subject: '🔔 Rent Payment Reminder',
                     html: `
@@ -1055,7 +1060,7 @@ app.delete('/api/ai/conversations/:conversationId', authenticateToken, async (re
 });
 
 // ==================== EXISTING API ROUTES ====================
-// (All your existing routes remain exactly as they were - I'm keeping them all)
+// (All your existing routes remain exactly as they were - with updated email from fields)
 
 // --------------- 1. ADMIN AUTH & MANAGEMENT ---------------
 app.post('/api/admin/login', (req, res) => {
@@ -1099,7 +1104,7 @@ app.delete('/api/admin/users/:userId', async (req, res) => {
         await deleteUserAndData(userId);
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: user.email,
             subject: 'YIDANA HOSTELS - Account Deleted',
             html: `<h2>Account Deletion Notification</h2><p>Dear ${user.name},</p><p>Your YIDANA HOSTELS account has been deleted by the administrator.</p><p>Contact: ${process.env.ADMIN_EMAIL} or 0594433667</p>`
@@ -1128,7 +1133,7 @@ app.post('/api/students/register', async (req, res) => {
         const token = jwt.sign({ userId, id: newUser._id, role: 'student' }, process.env.JWT_SECRET || 'your-secret-key', { expiresIn: '7d' });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: email,
             subject: 'Welcome to YIDANA HOSTELS!',
             html: `<h2>Hello ${name}</h2><p>Your student account is ready.</p><p><strong>User ID:</strong> ${userId}</p><p><strong>PIN:</strong> ${userPin}</p>`
@@ -1154,7 +1159,7 @@ app.post('/api/owners/register', async (req, res) => {
         await newOwner.save();
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: process.env.ADMIN_EMAIL,
             subject: 'New Owner Pending Approval',
             html: `<h2>New Owner Registration</h2><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Mobile:</strong> ${mobile}</p>`
@@ -1197,7 +1202,7 @@ app.post('/api/users/request-reset', async (req, res) => {
         await request.save();
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: process.env.ADMIN_EMAIL,
             subject: 'New Password Reset Request',
             html: `<h2>Password Reset Request</h2><p><strong>User:</strong> ${user.name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Mobile:</strong> ${mobile}</p>`
@@ -1232,7 +1237,7 @@ app.post('/api/admin/reset-requests/:requestId/approve', async (req, res) => {
         await request.save();
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: request.user.email,
             subject: 'Password Reset Approved',
             html: `<p>Your new PIN is: <strong>${newPin}</strong></p>`
@@ -1288,7 +1293,7 @@ app.post('/api/admin/owners/:ownerId/approve', async (req, res) => {
             await owner.save();
 
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: owner.email,
                 subject: 'Owner Account Approved',
                 html: `<h2>Congratulations!</h2><p>Your owner account is approved.</p><p><strong>User ID:</strong> ${userId}</p><p><strong>PIN:</strong> ${userPin}</p>`
@@ -1351,7 +1356,7 @@ app.post('/api/complaints', authenticateToken, async (req, res) => {
         await complaint.save();
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: process.env.ADMIN_EMAIL,
             subject: 'New Complaint Filed',
             html: `<h2>New Complaint</h2><p><strong>From:</strong> ${complainant.name}</p><p><strong>Against:</strong> ${accused.name}</p><p><strong>Reason:</strong> ${reason}</p>`
@@ -1408,7 +1413,7 @@ app.put('/api/admin/complaints/:complaintId', async (req, res) => {
         ];
         parties.forEach(party => {
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: party.email,
                 subject: `Complaint ${complaint.status}`,
                 html: `<p>Dear ${party.name},</p><p>A complaint has been ${complaint.status}.</p><p><strong>Admin Response:</strong> ${complaint.adminResponse}</p>`
@@ -1477,7 +1482,7 @@ app.post('/api/admin/announcements', authenticateToken, upload.array('attachment
 
         recipients.forEach(recipient => {
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: recipient.email,
                 subject: `📢 ANNOUNCEMENT: ${title}`,
                 html: `
@@ -1566,7 +1571,7 @@ app.post('/api/owner/announcements', authenticateToken, upload.array('attachment
 
         recipients.forEach(recipient => {
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: recipient.email,
                 subject: `🏠 Hostel Announcement: ${title}`,
                 html: `
@@ -1765,7 +1770,7 @@ app.post('/api/messages', authenticateToken, upload.array('attachments', 3), asy
         await message.save();
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: recipient.email,
             subject: `💬 New Message from ${senderName}`,
             html: `
@@ -2361,7 +2366,7 @@ app.post('/api/owner/evict', authenticateToken, async (req, res) => {
         }
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: occupancy.student.email,
             subject: '⚠️ Eviction Notice',
             html: `
@@ -2434,7 +2439,7 @@ app.post('/api/student/leave-request', authenticateToken, async (req, res) => {
         const student = await User.findById(req.user.id);
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: owner.email,
             subject: '📝 New Leave Request',
             html: `
@@ -2574,7 +2579,7 @@ app.put('/api/owner/leave-requests/:requestId', authenticateToken, async (req, r
             }
             
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: leaveRequest.student.email,
                 subject: '✅ Leave Request Approved',
                 html: `
@@ -2598,7 +2603,7 @@ app.put('/api/owner/leave-requests/:requestId', authenticateToken, async (req, r
             leaveRequest.processedAt = new Date();
             
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: leaveRequest.student.email,
                 subject: '❌ Leave Request Rejected',
                 html: `
@@ -2670,7 +2675,7 @@ app.post('/api/student/maintenance', authenticateToken, upload.array('attachment
         const student = await User.findById(req.user.id);
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: owner.email,
             subject: `🔧 New Maintenance Request: ${title}`,
             html: `
@@ -2780,7 +2785,7 @@ app.put('/api/owner/maintenance/:requestId', authenticateToken, async (req, res)
         await maintenance.save();
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: maintenance.student.email,
             subject: `🔧 Maintenance Request Updated: ${maintenance.title}`,
             html: `
@@ -2975,7 +2980,7 @@ app.post('/api/student/roommate-request', authenticateToken, async (req, res) =>
         const requester = await User.findById(req.user.id);
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: recipient.email,
             subject: '👥 Roommate Request',
             html: `
@@ -3084,7 +3089,7 @@ app.put('/api/student/roommate-requests/:requestId', authenticateToken, async (r
             }
             
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: roommateRequest.requester.email,
                 subject: '✅ Roommate Request Accepted',
                 html: `
@@ -3101,7 +3106,7 @@ app.put('/api/student/roommate-requests/:requestId', authenticateToken, async (r
             roommateRequest.status = 'rejected';
             
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: roommateRequest.requester.email,
                 subject: '❌ Roommate Request Declined',
                 html: `
@@ -3245,7 +3250,7 @@ app.post('/api/student/transfer-request', authenticateToken, async (req, res) =>
         const student = await User.findById(req.user.id);
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: currentOwner.email,
             subject: '🔄 New Room Transfer Request',
             html: `
@@ -3265,7 +3270,7 @@ app.post('/api/student/transfer-request', authenticateToken, async (req, res) =>
             const targetOwner = await User.findById(targetHostel.owner);
             
             const targetMailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: targetOwner.email,
                 subject: '🔄 New Room Transfer Request (Target Hostel)',
                 html: `
@@ -3407,7 +3412,7 @@ app.put('/api/owner/transfer-requests/:requestId', authenticateToken, async (req
             }
             
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: transferRequest.student.email,
                 subject: '❌ Transfer Request Rejected',
                 html: `
@@ -3490,7 +3495,7 @@ async function completeTransfer(transferRequest) {
         await newOccupancy.save();
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: transferRequest.student.email,
             subject: '✅ Transfer Completed',
             html: `
@@ -3581,7 +3586,7 @@ app.post('/api/owner/payments', authenticateToken, async (req, res) => {
         }
         
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.BREVO_LOGIN,
             to: student.email,
             subject: `🧾 Payment Receipt - ${receiptNumber}`,
             html: `
@@ -3784,13 +3789,13 @@ app.post('/api/bookings', authenticateToken, async (req, res) => {
         const owner = await User.findById(room.hostel.owner);
 
         transporter.sendMail({
-            from: process.env.EMAIL_USER, to: student.email,
+            from: process.env.BREVO_LOGIN, to: student.email,
             subject: 'Booking Request Received',
             html: `<p>Your booking for ${room.name} at ${room.hostel.name} is pending owner confirmation.</p>`
         }, err => { if (err) console.log('Email error:', err); });
 
         transporter.sendMail({
-            from: process.env.EMAIL_USER, to: owner.email,
+            from: process.env.BREVO_LOGIN, to: owner.email,
             subject: 'New Booking Request',
             html: `<p>A student has requested to book ${room.name}.</p><p>Student: ${student.name} (${student.mobile})</p><p>Please log in to confirm or cancel this booking.</p>`
         }, err => { if (err) console.log('Email error:', err); });
@@ -3928,7 +3933,7 @@ app.put('/api/owner/bookings/:bookingId', authenticateToken, async (req, res) =>
             }
             
             const mailOptions = {
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: booking.student.email,
                 subject: '✅ Booking Confirmed - You are now a resident!',
                 html: `
@@ -3965,7 +3970,7 @@ app.put('/api/owner/bookings/:bookingId', authenticateToken, async (req, res) =>
             booking.status = 'cancelled';
             
             transporter.sendMail({
-                from: process.env.EMAIL_USER,
+                from: process.env.BREVO_LOGIN,
                 to: booking.student.email,
                 subject: '❌ Booking Cancelled',
                 html: `
